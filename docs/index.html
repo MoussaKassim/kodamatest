@@ -569,6 +569,16 @@ $(document).ready(function ()  {
                 copyButton.classList.remove('copied');
             }, 1000);
         });
+       
+        // Fonction pour ajouter la classe de couleur de fond au survol
+        function addBackgroundOnHover(element) {
+            element.addEventListener('mouseenter', function () {
+                element.classList.add('bg-color');
+            });
+            element.addEventListener('mouseleave', function () {
+                element.classList.remove('bg-color');
+            });
+        }
 </script>
 
 </body>
