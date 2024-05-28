@@ -383,23 +383,17 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Introduction to BASS</h1>
-<h4 class="author">Zheng Li</h4>
-<h4 class="date">2022-06-07</h4>
+<h1 class="title toc-ignore">Introduction to KODAMA</h1>
+<h4 class="author">Stefano Cacciatore</h4>
+<h4 class="date">2024-05-24</h4>
 
 </div>
 
 
-<p>
-<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span>
-</button>
-</p>
+
 
 <div id="Introduction" class="section level1">
-<h1>Introduction!</h1>
+<h1>Introduction</h1>
 <p>KODAMA An unsupervised and semi-supervised learning algorithm to perform feature extraction from noisy and high-dimensional data</p>
 </div>
 <div id="introduction-to-bass" class="section level1">
@@ -431,47 +425,46 @@ of the National Academy of Sciences, 111(14), 5117-5122.</a></li>
 </div>
 <div id="Installation" class="section level2">
 <h2>Installation</h2>
-                <p>
-                    The KODAMA is available on <a href="https://CRAN.R-project.org/package=KODAMA"
-                        style="color: blue;">CRAN</a>.
-                </p>
-                <div class="code-container">
-                    <pre><code id="rCode" style="color: blue;">
+<p>
+The KODAMA is available on <a href="https://CRAN.R-project.org/package=KODAMA"
+style="color: blue;">CRAN</a>.
+</p>
+<div class="code-container">
+<pre><code id="rCode" style="color: blue;">
 library(<span style="color: black;">devtools</span>)
 install_github("<span style="color: green;">tkcaccia/KODAMA</span>")
-                    </code></pre>
-                    <button id="copyButton"><i class="far fa-copy"></i> </button>
-                </div>
-            </div>
-        </section>
-     <!-- Applications Section -->
-        <section id="applications" class="data-section">
-            <div class="container">
-                <h2>Applications</h2>
-                <div class="card-deck">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Metabolomic data</h5>
-                            <p class="card-text">Explore Metabolomic data</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Single cell RNA seq data</h5>
-                            <p class="card-text">Explore Single cell RNA seq data</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Spatial Transcriptomic data</h5>
-                            <p class="card-text">Explore Spatial Transcriptomic data</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
+</code></pre>
+<button id="copyButton"><i class="far fa-copy"></i> </button>
+</div>
+</div>
+</section>
+<!-- Applications Section -->
+<section id="applications" class="section level2">
+<div class="container">
+<h2>Applications</h2>
+<div class="card-deck">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title">Metabolomic data</h5>
+<p class="card-text">Explore Metabolomic data</p>
+</div>
+</div>
+<div class="card">
+<div class="card-body">
+<h5 class="card-title">Single cell RNA seq data</h5>
+<p class="card-text">Explore Single cell RNA seq data</p>
+</div>
+</div>
+<div class="card">
+<div class="card-body">
+<h5 class="card-title">Spatial Transcriptomic data</h5>
+<p class="card-text">Explore Spatial Transcriptomic data</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
 TeX fonts only; see
@@ -560,6 +553,22 @@ $(document).ready(function ()  {
     script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
+
+        // JavaScript for copying code and adding hover effect
+        function copyCode() {
+            var rCode = document.getElementById('rCode');
+            var codeText = rCode.innerText;
+            navigator.clipboard.writeText(codeText);
+        }
+
+        var copyButton = document.getElementById('copyButton');
+        copyButton.addEventListener('click', function () {
+            copyCode();
+            copyButton.classList.add('copied');
+            setTimeout(function () {
+                copyButton.classList.remove('copied');
+            }, 1000);
+        });
 </script>
 
 </body>
