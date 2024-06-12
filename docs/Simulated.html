@@ -401,11 +401,11 @@ div.tocify {
     <p>
         The simulated data in this example are generated to demonstrate how to use the KODAMA and UMAP techniques for cluster and spatial domain analysis. We create two distinct regions representing areas rich in T cells and B cells within the lymph node.
     </p>
-       </div>
+       
         <p align="center">
             <img src="https://gist.github.com/assets/168087487/5b73ff0e-ebbc-490d-a027-8f83b4583d1b" alt="">
         </p>
-    </div>
+    
     <p>
         We generate x and y coordinates for the two regions, assigning labels to simulate different cell types (T cells and B cells).
     </p>
@@ -429,11 +429,11 @@ data = cbind(rnorm(200, mean=labels, sd=0.1), rnorm(200, mean=labels, sd=0.1))
         </pre>
         <button class="copy-button" onclick="copyToClipboard('code1')">Copier</button>
     </div>
-       </div>
+       
         <p align="center">
             <img src="https://gist.github.com/assets/168087487/1ebb8046-d656-4b5b-9265-c515ae4fc650" alt="">
         </p>
-    </div>
+    
        <div id="Visualization with KODAMA and UMAP" class="section level1">
 
     <h2 class="section-title">Visualization with KODAMA and UMAP</h2>
@@ -469,16 +469,16 @@ points(u[labels,], bg=color.code[region+1][labels], pch=21+2*0, cex=1+1.5*region
         </pre>
         <button class="copy-button" onclick="copyToClipboard('code2')">Copier</button>
     </div>
-              </div>
+              
         <p align="center">
             <img src="https://gist.github.com/assets/168087487/1a799a59-a370-488b-a8a1-da761d2c86f9" alt="UMAP"">
         </p>
-    </div>
-</div>
+    
+
         <p align="center">
             <img src="https://gist.github.com/assets/168087487/bd3fd89e-00e7-4912-8efb-aad93d703ae7" alt="KODAMA"">
         </p>
-    </div>
+    
     <p>
         The generated visualizations show the position of the points, as well as the results of the KODAMA and UMAP analyses. The visualizations indicate the molecular positions and identified clusters, providing a better understanding of the spatial structure of the immune cells within the lymph node. This can help identify regions of interest for further analysis, with significant implications for research in immunology and the development of targeted therapies.
     </p>
