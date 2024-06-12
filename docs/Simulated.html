@@ -298,6 +298,37 @@ div.tocify {
   border-radius: 0px;
 }
 
+            
+        .section-title {
+            font-size: 1.5em;
+            margin-top: 20px;
+            color: #333;
+        }
+        .code-section {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 4px solid #333;
+            margin: 20px 0;
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .copy-button:hover {
+            background-color: #555;
+        }
+        pre {
+            margin: 0;
+            overflow: auto;
+        }
 
 </style>
 
@@ -388,9 +419,11 @@ div.tocify {
 
 </div>
 <div id="introduction" class="section level1">
-  <h1>Introduction</h1>
+
+    <h1>Introduction</h1>
 
     <p>
+        
         In the context of working with biological spatial data, such as spatial sequencing data, which provide information on the location of biological molecules in a sample, the goal is to identify clusters of molecules grouped in specific areas, thus indicating regions of particular biological activity. For example, in immunology, analyzing the spatial distribution of immune cells within tissues can reveal insights into immune responses and disease mechanisms. Techniques like KODAMA and UMAP are valuable tools for this type of analysis.
     </p>
     <p>
@@ -401,16 +434,15 @@ div.tocify {
     <p>
         The simulated data in this example are generated to demonstrate how to use the KODAMA and UMAP techniques for cluster and spatial domain analysis. We create two distinct regions representing areas rich in T cells and B cells within the lymph node.
     </p>
-       
-        <p align="center">
+      <p align="center">
             <img src="https://gist.github.com/assets/168087487/5b73ff0e-ebbc-490d-a027-8f83b4583d1b" alt="">
         </p>
-    
     <p>
         We generate x and y coordinates for the two regions, assigning labels to simulate different cell types (T cells and B cells).
     </p>
 
     <div class="code-section">
+        <button class="copy-button" onclick="copyToClipboard('code1')" title="Copier le code"><i class="fas fa-copy"></i></button>
         <pre id="code1">
 set.seed(1234)
 x1 = runif(100, min=-1, max=0)
@@ -427,20 +459,17 @@ labels[ss] = !labels[ss]
 region = rep(1:0, each=100)
 data = cbind(rnorm(200, mean=labels, sd=0.1), rnorm(200, mean=labels, sd=0.1))
         </pre>
-        <button class="copy-button" onclick="copyToClipboard('code1')">Copier</button>
     </div>
-       
-        <p align="center">
+ <p align="center">
             <img src="https://gist.github.com/assets/168087487/1ebb8046-d656-4b5b-9265-c515ae4fc650" alt="">
         </p>
-    
-       <div id="Visualization with KODAMA and UMAP" class="section level1">
-
+        <div id="Visualization with KODAMA and UMAP" class="section level1">
     <h2 class="section-title">Visualization with KODAMA and UMAP</h2>
     <p>
         We use KODAMA and UMAP methods to analyze and visualize the data, applying dimensionality reduction and identifying clusters and spatial domains.
     </p>
     <div class="code-section">
+        <button class="copy-button" onclick="copyToClipboard('code2')" title="Copier le code"><i class="fas fa-copy"></i></button>
         <pre id="code2">
 color.code = c("#1d79d0aa", "#53ca3eaa")
 kk = KODAMA.matrix.parallel(data, spatial=xy, spatial.resolution=0.1, M=100, FUN="PLS", landmarks=100000, splitting=100, f.par.pls=2, n.cores=4)
@@ -467,9 +496,7 @@ box()
 points(u[!labels,], bg=color.code[region+1][!labels], pch=21+2, cex=1+1.5*region[!labels])
 points(u[labels,], bg=color.code[region+1][labels], pch=21+2*0, cex=1+1.5*region[labels])
         </pre>
-        <button class="copy-button" onclick="copyToClipboard('code2')">Copier</button>
     </div>
-              
         <p align="center">
             <img src="https://gist.github.com/assets/168087487/1a799a59-a370-488b-a8a1-da761d2c86f9" alt="UMAP"">
         </p>
@@ -478,10 +505,10 @@ points(u[labels,], bg=color.code[region+1][labels], pch=21+2*0, cex=1+1.5*region
         <p align="center">
             <img src="https://gist.github.com/assets/168087487/bd3fd89e-00e7-4912-8efb-aad93d703ae7" alt="KODAMA"">
         </p>
-    
     <p>
         The generated visualizations show the position of the points, as well as the results of the KODAMA and UMAP analyses. The visualizations indicate the molecular positions and identified clusters, providing a better understanding of the spatial structure of the immune cells within the lymph node. This can help identify regions of interest for further analysis, with significant implications for research in immunology and the development of targeted therapies.
     </p>
+
 
 
 
