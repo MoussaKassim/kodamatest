@@ -448,15 +448,16 @@ of the National Academy of Sciences, 111(14), 5117-5122.</a></li>
 The KODAMA is available on <a href="https://CRAN.R-project.org/package=KODAMA"
 style="color: blue;">CRAN</a>.
 </p>
-<div class="code-container">
-<button id="copyButton"><i class="far fa-copy"></i> </button>
-</div>
-<pre><code id="rCode" style="color: blue;">
+<div class="code-container" style="position: relative;">
+    <button id="copyButton" style="position: absolute; top: 0; right: 0;"><i class="far fa-copy"></i></button>
+    <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+        <pre><code id="rCode" style="color: blue;">
 library(<span style="color: black;">devtools</span>)
 install_github("<span style="color: green;">tkcaccia/KODAMA</span>")
-</code></pre>
-
+        </code></pre>
+    </div>
 </div>
+
 </section>
 <!-- Applications Section -->
 <section id="applications" class="section level2">
@@ -567,39 +568,33 @@ $(document).ready(function ()  {
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
+    // JavaScript for copying code and adding hover effect
+    function copyCode() {
+        var rCode = document.getElementById('rCode');
+        var codeText = rCode.innerText;
+        navigator.clipboard.writeText(codeText);
+    }
 
-        // JavaScript for copying code and adding hover effect
-        function copyCode() {
-            var rCode = document.getElementById('rCode');
-            var codeText = rCode.innerText;
-            navigator.clipboard.writeText(codeText);
-        }
+    var copyButton = document.getElementById('copyButton');
+    copyButton.addEventListener('click', function () {
+        copyCode();
+        copyButton.classList.add('copied');
+        setTimeout(function () {
+            copyButton.classList.remove('copied');
+        }, 1000);
+    });
 
-        var copyButton = document.getElementById('copyButton');
-        copyButton.addEventListener('click', function () {
-            copyCode();
-            copyButton.classList.add('copied');
-            setTimeout(function () {
-                copyButton.classList.remove('copied');
-            }, 1000);
+    // Function to add background color class on hover
+    function addBackgroundOnHover(element) {
+        element.addEventListener('mouseenter', function () {
+            element.classList.add('bg-color');
         });
-       
-        // Fonction pour ajouter la classe de couleur de fond au survol
-        function addBackgroundOnHover(element) {
-            element.addEventListener('mouseenter', function () {
-                element.classList.add('bg-color');
-            });
-            element.addEventListener('mouseleave', function () {
-                element.classList.remove('bg-color');
-            });
-        }
+        element.addEventListener('mouseleave', function () {
+            element.classList.remove('bg-color');
+        });
+    }
 </script>
+
 
 </body>
 </html>
