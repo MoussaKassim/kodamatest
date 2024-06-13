@@ -509,16 +509,16 @@ points(u[labels,], bg=color.code[region+1][labels], pch=21+2*0, cex=1+1.5*region
         The generated visualizations show the position of the points, as well as the results of the KODAMA and UMAP analyses. The visualizations indicate the molecular positions and identified clusters, providing a better understanding of the spatial structure of the immune cells within the lymph node. This can help identify regions of interest for further analysis, with significant implications for research in immunology and the development of targeted therapies.
     </p>
 <div id="Advanced Manipulations and Visualizations" class="section level1">
-    <h2 class="section-title">Partie Deux: Manipulations et Visualisations Avancées</h2>
+    <h2 class="section-title">Part Two: Advanced Manipulations and Visualizations</h2>
     <p>
-        Dans cette section, nous approfondissons les manipulations et visualisations avancées en utilisant les techniques KODAMA et UMAP.
+        In this section, we build upon the previous data generation and visualization methods to demonstrate advanced manipulations and visualizations using KODAMA and UMAP techniques.
     </p>
     <p align="center">
         <img src="https://gist.github.com/assets/168087487/43c6a8e1-0aea-4596-b8b8-63142c47bd9f" alt="">
     </p>
-    <h3>Génération de Données et Définition de la Graine Aléatoire</h3>
+    <h3>Data Generation and Setting the Random Seed</h3>
     <p>
-        En continuant à partir de la section précédente, nous définissons la graine aléatoire et générons des données pour deux régions distinctes, en attribuant des étiquettes et des régions spécifiques à chaque point de données.
+        Continuing from the previous section, we set the random seed and generate data for two distinct regions, assigning labels and specific regions to each data point.
     </p>
     <div class="code-section">
         <button class="copy-button" onclick="copyToClipboard('code2')" title="Copier le code"><i class="fas fa-copy"></i></button>
@@ -555,9 +555,9 @@ labels = as.numeric(as.factor(labels)) + 1
     <p align="center">
         <img src="https://gist.github.com/assets/168087487/6cdc6d76-2d22-49ec-bba3-55408e9c2d4b" alt="">
     </p>
-    <h3>Visualisation avec KODAMA et UMAP</h3>
+    <h3>Visualization with KODAMA and UMAP </h3>
     <p>
-        Nous appliquons l'Analyse en Composantes Principales (PCA) sur les données filtrées et utilisons les méthodes KODAMA et UMAP pour analyser et visualiser les données, en appliquant une réduction de dimensionnalité et en identifiant les clusters et les domaines spatiaux.
+      We apply Principal Component Analysis (PCA) on the filtered data and use KODAMA and UMAP methods to analyze and visualize the data, applying dimensionality reduction and identifying clusters and spatial domains.
     </p>
     <div class="code-section">
         <button class="copy-button" onclick="copyToClipboard('code2')" title="Copier le code"><i class="fas fa-copy"></i></button>
