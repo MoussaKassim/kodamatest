@@ -1,0 +1,198 @@
+---
+title: "About"
+output:
+  workflowr::wflow_html:
+    toc: true
+editor_options:
+  chunk_output_type: console
+---
+
+Describe your project.
+
+**Merfish Data Analysis**
+
+*Discover an advanced approach to analyzing Merfish data, a revolutionary molecular imaging technique that maps RNA in cells with unparalleled spatial precision.*
+
+**Loading and Cleaning Data**
+
+Using specialized libraries to load and clean Merfish data, removing irrelevant information.
+
+```R
+# Load necessary libraries
+library(Seurat)
+library(KODAMAextra)
+library(ggplot2)
+library(NMI)
+library(mclust)
+library(bluster)
+library(igraph)
+
+# Set working directory
+setwd("~/Merfish giotto/Data/merfish")
+
+# Load data
+data <- read.csv("C:/Users/T0087231/Videos/EBTESSAM/Moffitt_and_Bambah-Mukku_et_al_merfish_all_cells.csv")
+data <- as.data.frame(data)
+
+# Data cleaning
+colnames_data <- colnames(data)
+blankgenes <- grep("Blank", colnames_data)
+fos_index <- which(colnames(data) == "Fos")
+df <- data[, -c(fos_index, blankgenes)]
+selected_bregma <- unique(df$Bregma)
+
+# Filter data for Animal_ID 1 and specific Bregma values
+exp <- subset(df, Animal_ID == 1 & Bregma %in% selected_bregma)
+rownames(exp) <- exp$Cell_ID
+data_list <- split(exp, exp$Bregma)
+data_list <- data_list[match(selected_bregma, names(data_list))]
+```
+
+**Normalization and Dimensionality Reduction**
+
+Normalization and dimensionality reduction using Principal Component Analysis (PCA) for efficient visualization.
+
+```R
+# Initialize lists to store results
+xy <- list()
+pca <- list()
+v <- list()
+kk <- list()
+vis <- list()
+pred <- list()
+refine <- list()
+cons <- list()
+ARI <- list()
+NMI <- list()
+
+# Normalization and dimension reduction by PCA
+for (i in names(data_list)) {
+  print(i)
+  x <- data_list[[i]]$Centroid_X - min(data_list[[i]]$Centroid_X)
+  y <- data_list[[i]]$Centroid_Y - min(data_list[[i]]$Centroid_Y)
+  xy[[i]] <- cbind(x, y)
+  rownames(xy[[i]]) <- rownames(data_list[[i]])
+
+  cons[[i]] <- t(data_list[[i]][, 10:ncol(data_list[[i]])])
+  colnames(cons[[i]]) <- rownames(data_list[[i]])
+
+  v[[i]] <- t(LogNormalize(cons[[i]]))
+  pca[[i]] <- prcomp(v[[i]], scale. = TRUE)$x[, 1:50]
+}
+```
+
+**KODAMA Clustering and Graph-based Clustering**
+
+Grouping data into clusters using the KODAMA algorithm, followed by refinement with graph-based clustering for accurate classification.
+
+```R
+# KODAMA clustering
+kk[[i]] <- KODAMA.matrix.parallel(pca[[i]], spatial = xy[[i]], FUN = "PLS", landmarks = 10000, n.cores = 4)
+vis[[i]] <- KODAMA.visualization(kk[[i]], method = "UMAP")
+names(vis[[i]]) <- names(data_list[[i]])
+
+# Graph-based clustering
+g <- bluster::makeSNNGraph(as.matrix(vis[[i]]), k = 100)
+g_walk <- igraph::cluster_walktrap(g)
+pred[[i]] <- as.character(igraph::cut_at(g_walk, no = 8))
+refine[[i]] <- refinecluster(pred[[i]], xy[[i]], shape = "hexagon")
+```
+
+**Importing the vis.R Code**
+
+For better visualization of the results, it is essential to import the vis.R code at this stage.
+
+```R
+# Importing the vis.R code
+source("path_to_vis.R")
+```
+
+**Cluster Visualization**
+
+Visualizing clusters with UMAP, a dimensionality reduction method for better data understanding.
+
+```R
+# Define colors for visualizations
+cols <- c("#669bbc", "#81b29a", "#f2cc8f", "#adc178",
+          "#dde5b6", "#a8dadc", "#e5989b", "#e07a5f")
+
+# Visualize clusters
+plotClustersFacet(xy, pred, selected_bregma, size = 0.2) +
+  scale_color_manual("Domain", values = cols) +
+  guides(color = guide_legend(nrow = 1, override.aes = list(size = 2)))
+```
+
+*Image 1: ![Cluster Visualization](https://gist.github.com/assets/168087487/f58086ea-d11b-4498-a4f6-fa42011c75c6)*
+
+**Cluster Visualization (continued)**
+
+```R
+plotClustersFacet(xy, refine, selected_bregma, size = 1) +
+  scale_color_manual("Domain", values = cols) +
+  guides(color = guide_legend(nrow = 1, override.aes = list(size = 2)))
+```
+
+*Image 2: ![Cluster Visualization](https://gist.github.com/assets/168087487/75db64f0-c96f-426c-87f4-fdfee32d8c73)*
+
+```R
+# Select specific Bregma for visualization
+selected_bregma_subset <- which(selected_bregma %in% c(0.26, 0.16, 0.06, -0.04, -0.14, -0.24))
+
+plotClustersFacet(xy[selected_bregma_subset], refine[selected_bregma_subset], selected_bregma[selected_bregma_subset], size = 0.2) +
+  scale_color_manual("Domain", values = cols) +
+  guides(color = guide_legend(nrow = 1, override.aes = list(size = 2)))
+```
+
+*Image 3: ![Cluster Visualization](https://gist.github.com/assets/168087487/4ce6958f-3f54-4c09-914a-b3667b7ec905)*
+
+```R
+# Visualize clusters for the first Bregma values
+plotClustersFacet(xy[1:5], pred[1:5], selected_bregma, size = 0.2) +
+  scale_color_manual("Domain", values = cols) +
+  guides(color = guide_legend(nrow = 1, override.aes = list(size = 2)))
+```
+
+*Image 4: ![Cluster Visualization](https://gist.github.com/assets/168087487/c8ffc1a2-ec77-44ed-b659-2a05c5589427)*
+
+```R
+plotClustersFacet(xy[1:5], refine[1:5], selected_bregma, size = 0.2) +
+  scale_color_manual("Domain", values = cols) +
+  guides(color = guide_legend(nrow = 1, override.aes = list(size = 2)))
+```
+
+*Image 5: ![Cluster Visualization](https://gist.github.com/assets/168087487/36d39921-9e00-48eb-8e7b-55a2546b291a)*
+
+**Cell Types**
+
+Identifying and visualizing different cell types for in-depth analysis.
+
+```R
+cols <- c("#98c1d9", "#2a9d8f", "#e9c46a", "#f4a261", "#e76f51", 
+          "#e0fbfc", "#a8dadc", "#3d5a80", "#81b29a", "#e07a5f", 
+          "#DBC9D8", "#b388eb", "#A4277C", "#BC93B2", "#0077b6", 
+          "#bb3e03", "#ffddd2", "#f19c79", "#006d77", "#6A3569")
+
+plotClustersFacet(xy, refine, selected_bregma, size = 0.2) +
+  scale_color_manual("Type", values = cols) +
+  guides(color = guide_legend(byrow = T, nrow = 2, override.aes = list(size = 2)))
+```
+
+*Image 6: ![Cluster Visualization](https://gist.github.com/assets/168087487/80dece44-f472-4d43-aa3b-875907fa6b17)*
+
+```R
+plotCellTypes(xy[[3]], refine[[3]], cols, ncol = 5, dotsize = 0.5,
+              size = 0.6, alpha = 0.5, stroke = 0) +
+  ggtitle(names(data_list)[3])
+```
+
+*Image 7: ![Cluster Visualization](https://gist.github.com/assets/168087487/05a8519c-b13c-4b33-8a18-84e32e218065)*
+
+```R
+plotCellTypes(xy[[3]], refine[[3]], cols, ncol = 5, dotsize = 0.5,
+              size = 0.6,alpha = 0.5, stroke = 0) +
+  ggtitle(names(data_list)[3])
+```
+
+*Image 8: ![Cluster Visualization](https://gist.github.com/assets/168087487/3323ae24-45fe-4cb0-a2ac-a390c266540b)*
+
+This script illustrates a standard approach to Merfish data analysis, showcasing the use of commonly used bioinformatics tools. It provides a comprehensive overview of the Merfish data analysis and visualization process, crucial for understanding the spatial distribution of RNA in cells.
